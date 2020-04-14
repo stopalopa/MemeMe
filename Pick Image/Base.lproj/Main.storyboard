@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_5" orientation="landscape" appearance="light"/>
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -10,32 +10,32 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Pick_Image" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DsI-Np-0z1">
-                                <rect key="frame" x="44" y="50" width="808" height="495"/>
+                                <rect key="frame" x="0.0" y="214" width="414" height="495"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="495" id="gap-mu-1v4"/>
                                 </constraints>
                             </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="TOP" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mm4-ZJ-iF9">
-                                <rect key="frame" x="414.66666666666669" y="100" width="67" height="34"/>
+                                <rect key="frame" x="173.66666666666666" y="266" width="67" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ssw-KD-Dhp">
-                                <rect key="frame" x="767" y="12" width="48" height="30"/>
+                                <rect key="frame" x="329" y="56" width="48" height="30"/>
                                 <state key="normal" title="Cancel"/>
                                 <connections>
                                     <action selector="cancel:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jeh-Qd-H1L"/>
                                 </connections>
                             </button>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kRw-zU-xft">
-                                <rect key="frame" x="44" y="344" width="808" height="49"/>
+                                <rect key="frame" x="0.0" y="813" width="414" height="49"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="49" id="LQ4-F2-Rhz"/>
                                 </constraints>
@@ -53,12 +53,12 @@
                                 </items>
                             </toolbar>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="BOTTOM" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vyh-lR-Lng">
-                                <rect key="frame" x="393" y="268" width="110" height="34"/>
+                                <rect key="frame" x="152" y="600" width="110" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z3y-eM-7jY">
-                                <rect key="frame" x="81" y="16" width="19" height="22"/>
+                                <rect key="frame" x="37" y="60" width="19" height="22"/>
                                 <state key="normal" image="square.and.arrow.up" catalog="system"/>
                                 <connections>
                                     <action selector="shareSaveMeme:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tYc-XV-0xx"/>
@@ -68,7 +68,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Vyh-lR-Lng" firstAttribute="top" secondItem="mm4-ZJ-iF9" secondAttribute="bottom" multiplier="2" id="16E-LM-ZqY"/>
-                            <constraint firstItem="DsI-Np-0z1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" multiplier="3.5" constant="50" id="1B4-Q3-okZ"/>
+                            <constraint firstItem="DsI-Np-0z1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" multiplier="3.5" constant="60" id="1B4-Q3-okZ"/>
                             <constraint firstItem="kRw-zU-xft" firstAttribute="leading" secondItem="DsI-Np-0z1" secondAttribute="leading" id="2hI-9z-Qzp"/>
                             <constraint firstItem="DsI-Np-0z1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="4TU-MS-D43"/>
                             <constraint firstItem="mm4-ZJ-iF9" firstAttribute="centerX" secondItem="DsI-Np-0z1" secondAttribute="centerX" id="4WS-aX-KIq"/>
@@ -81,7 +81,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="DsI-Np-0z1" secondAttribute="trailing" id="n5I-Qt-O4Z"/>
                             <constraint firstItem="mm4-ZJ-iF9" firstAttribute="centerX" secondItem="Vyh-lR-Lng" secondAttribute="centerX" id="pR6-JB-926"/>
                             <constraint firstItem="Z3y-eM-7jY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="37" id="sjh-oZ-DjF"/>
-                            <constraint firstItem="mm4-ZJ-iF9" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" multiplier="4" constant="100" id="zIM-5y-lZg"/>
+                            <constraint firstItem="mm4-ZJ-iF9" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" multiplier="4" constant="90" id="zIM-5y-lZg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

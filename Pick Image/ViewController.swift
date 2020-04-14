@@ -19,6 +19,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var toolBar: UIToolbar!
     
+    let topPlaceHolderText: String = "TOP"
+    let bottomPlaceHolderText: String = "BOTTOM"
+    
     let memeTextAttributes: [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.strokeColor: UIColor.black,
         NSAttributedString.Key.foregroundColor: UIColor.white,
@@ -26,28 +29,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSAttributedString.Key.strokeWidth: -2.0
     ]
     
-    struct Meme {
-        var topText: String
-        var bottomText: String
-        var originalImage: UIImage
-        var memedImage: UIImage
-    }
-    
     // MARK: Lifecycle methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        topText.textAlignment = .center
-        bottomText.textAlignment = .center
-        topText.borderStyle = .none
-        bottomText.borderStyle = .none
-        self.topText.delegate = self
-        self.bottomText.delegate = self
-        topText.defaultTextAttributes = memeTextAttributes
-        bottomText.defaultTextAttributes = memeTextAttributes
-        topText.text = "TOP"
-        bottomText.text = "BOTTOM"
-        // Do any additional setup after loading the view.
+        styleTextField(topText, topPlaceHolderText)
+        styleTextField(bottomText, bottomPlaceHolderText)
+    }
+    
+    func styleTextField(_ textField: UITextField,_ defaultText: String) {
+        textField.text = defaultText
+        textField.textAlignment = .center
+        textField.borderStyle = .none
+        textField.delegate = self
+        textField.defaultTextAttributes = memeTextAttributes
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +62,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // MARK: Notification subscription and unsubscription
     
     func subscribeToKeyboardNotifications() {
-        print("subscribe")
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -99,12 +93,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // MARK: Pick Images from Camera or Album
     
+    @IBAction func pickAnImageFromAlbum(_ sender: Any)  {
+        pickFromSource(.photoLibrary)
+    }
+    
     @IBAction func pickAnImagefromCamera(_ sender: Any) {
+        pickFromSource(.camera)
+    }
+    
+    func pickFromSource(_ source: UIImagePickerController.SourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        imagePicker.sourceType = .camera
+        imagePicker.sourceType = source
         present(imagePicker, animated: true, completion: nil)
-        
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -119,19 +120,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func pickAnImageFromAlbum(_ sender: Any)  {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        present(imagePicker, animated: true, completion: nil)
-    }
-
-    
     // MARK: Textfield Behavior
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         //Clear only if text is default text
         //this would also clear text if the user entered TOP or BOTTOM in the text fields
-        if textField.text == "TOP" || textField.text == "BOTTOM" {
+        if textField.text == topPlaceHolderText || textField.text == bottomPlaceHolderText {
             textField.text = ""
         }
     }
@@ -143,10 +137,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     //MARK: Generate Memed Image
     
-    func generateMeme() -> Meme {
+    func generateMeme()  {
         let memedImage = generateMemedImage()
-        let meme = Meme(topText: topText.text!, bottomText: bottomText.text!, originalImage: imagePickerView.image!, memedImage: memedImage)
-        return meme
+        _ = Meme(topText: topText.text!, bottomText: bottomText.text!, originalImage: imagePickerView.image!, memedImage: memedImage)
     }
     
     func generateMemedImage() -> UIImage {
@@ -170,15 +163,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // MARK: Share and cancel methods
     
     @IBAction func shareSaveMeme(_ sender: Any) {
-        let meme = generateMeme()
-        let controller = UIActivityViewController(activityItems: [meme.memedImage], applicationActivities: nil)
+        let meme = generateMemedImage()
+        let controller = UIActivityViewController(activityItems: [meme], applicationActivities: nil)
+        controller.completionWithItemsHandler = {[weak self] type, completed, items, error in
+            if completed {
+                self?.generateMeme()
+            }
+            controller.dismiss(animated: true, completion: nil)
+        }
         self.present(controller, animated: true, completion: nil)
     }
         
     @IBAction func cancel(_ sender: Any) {
         imagePickerView.image = nil
-        topText.text = "TOP"
-        bottomText.text = "BOTTOM"
+        topText.text = topPlaceHolderText
+        bottomText.text = bottomPlaceHolderText
         saveButton.isEnabled = false
     }
 }

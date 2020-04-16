@@ -12,13 +12,12 @@ class MemeTableViewController: UITableViewController {
 
     // Retrieve meme list from global scope
     var memeArray: [Meme]! {
-        //let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        //memes = appDelegate.memes
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
         return appDelegate.memes
     }
     
+    //MARK: Lifecyle functions
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -28,6 +27,7 @@ class MemeTableViewController: UITableViewController {
         tableView!.reloadData()
        }
     
+    // MARK: Table Setup
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
           return memeArray.count
       }
@@ -37,10 +37,8 @@ class MemeTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MemeCell")!
         let meme = self.memeArray[(indexPath as NSIndexPath).row]
         
-        // Set the name and image
-        //var imageView = UIImageView(frame: CGRectMake(100, 150, 150, 150))
         cell.imageView?.image = meme.memedImage
-        cell.textLabel?.text = meme.topText + "..." + meme.bottomText
+        cell.textLabel?.text = "\(meme.topText)...\(meme.bottomText)"
         return cell
     }
 

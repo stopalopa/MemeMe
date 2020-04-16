@@ -18,27 +18,28 @@ class MemeCollectionViewController: UICollectionViewController {
           return appDelegate.memes
     }
     
+    // Mark: Lifecycle Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let space: CGFloat = 1.0
-        print(view.frame.size.width)
-        print(view.frame.size.height)
-        let dimension = (view.frame.size.width - (2 * space)) / 2.0
+        //let dimension = (view.frame.size.width - (2 * space)) / 2.0
         
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
-        flowLayout.itemSize = CGSize(width: dimension, height: dimension)
-        print(flowLayout.itemSize)
+        //Commented out because led to issue where not all images were displayed
+        //flowLayout.itemSize = CGSize(width: dimension, height: dimension)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView!.reloadData()
-        print("reloaded")
         self.tabBarController?.navigationItem.title = "Sent Memes"
     }
      
+    //Mark: Collection view methods
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.memes.count

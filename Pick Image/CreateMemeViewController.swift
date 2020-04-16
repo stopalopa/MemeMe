@@ -37,27 +37,6 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareSaveMeme(_:)))
     }
     
-    @objc func cancel() {
-        imagePickerView.image = nil
-        topText.text = topPlaceHolderText
-        bottomText.text = bottomPlaceHolderText
-        navigationItem.leftBarButtonItem?.isEnabled = false
-        if let navigationController = navigationController {
-            navigationController.popToRootViewController(animated: true)
-        }
-    }
- 
-    
-    
-    func styleTextField(_ textField: UITextField,_ defaultText: String) {
-        textField.text = defaultText
-        textField.borderStyle = .none
-        textField.delegate = self
-        textField.textAlignment = .center
-        textField.defaultTextAttributes = memeTextAttributes
-        textField.textAlignment = .center
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
@@ -65,10 +44,6 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         if navigationItem.leftBarButtonItem != nil && imagePickerView.image ==  nil {
             navigationItem.leftBarButtonItem?.isEnabled = false
         }
-    }
-    
-    func centerText(_ textField: UITextField) {
-        textField.textAlignment = .center
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -137,7 +112,29 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         dismiss(animated: true, completion: nil)
     }
     
-    // MARK: Textfield Behavior
+    //MARK: Cancel
+    
+    @objc func cancel() {
+        imagePickerView.image = nil
+        topText.text = topPlaceHolderText
+        bottomText.text = bottomPlaceHolderText
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        if let navigationController = navigationController {
+            navigationController.popToRootViewController(animated: true)
+        }
+    }
+    
+    
+    // MARK: Textfield Behavior and Style
+    
+    func styleTextField(_ textField: UITextField,_ defaultText: String) {
+        textField.text = defaultText
+        textField.borderStyle = .none
+        textField.delegate = self
+        textField.textAlignment = .center
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.textAlignment = .center
+    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         //Clear only if text is default text
@@ -183,6 +180,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         controller.completionWithItemsHandler = {[weak self] type, completed, items, error in
             if completed {
               if let meme = self?.generateMeme() {
+                //save meme so can be accessed later
                 self?.addMemeToArray(meme)
                 }
             }
@@ -195,11 +193,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     func addMemeToArray(_ meme : Meme) {
-        let object = UIApplication.shared.delegate
-        let appDelegate = object as! AppDelegate
-        appDelegate.memes.append(meme)
-        //(UIApplication.shared.delegate as! AppDelegate).memes.append(meme)
+        (UIApplication.shared.delegate as! AppDelegate).memes.append(meme)
     }
-        
 }
 

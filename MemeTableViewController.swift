@@ -17,7 +17,8 @@ class MemeTableViewController: UITableViewController {
         return appDelegate.memes
     }
     
-    //MARK: Lifecyle functions
+    //MARK: Lifecyle methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -28,6 +29,7 @@ class MemeTableViewController: UITableViewController {
        }
     
     // MARK: Table Setup
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
           return memeArray.count
       }

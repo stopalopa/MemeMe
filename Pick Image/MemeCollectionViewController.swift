@@ -18,7 +18,7 @@ class MemeCollectionViewController: UICollectionViewController {
           return appDelegate.memes
     }
     
-    // Mark: Lifecycle Methods
+    // MARK: Lifecycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,7 @@ class MemeCollectionViewController: UICollectionViewController {
         self.tabBarController?.navigationItem.title = "Sent Memes"
     }
      
-    //Mark: Collection view methods
+    // MARK: Collection view methods
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.memes.count

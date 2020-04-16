@@ -8,15 +8,13 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var albumButton: UIBarButtonItem!
     @IBOutlet weak var topText: UITextField!
     @IBOutlet weak var bottomText: UITextField!
-    @IBOutlet weak var saveButton: UIButton!
-    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var toolBar: UIToolbar!
     
     let topPlaceHolderText: String = "TOP"
@@ -35,22 +33,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         styleTextField(topText, topPlaceHolderText)
         styleTextField(bottomText, bottomPlaceHolderText)
-    }
-    
-    func styleTextField(_ textField: UITextField,_ defaultText: String) {
-        textField.text = defaultText
-        textField.textAlignment = .center
-        textField.borderStyle = .none
-        textField.delegate = self
-        textField.defaultTextAttributes = memeTextAttributes
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareSaveMeme(_:)))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         subscribeToKeyboardNotifications()
-        if saveButton != nil && imagePickerView.image ==  nil {
-            saveButton.isEnabled = false
+        if navigationItem.leftBarButtonItem != nil && imagePickerView.image ==  nil {
+            navigationItem.leftBarButtonItem?.isEnabled = false
         }
     }
     
@@ -111,7 +103,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
             imagePickerView.image = image
-            saveButton.isEnabled = true
+            navigationItem.leftBarButtonItem?.isEnabled = true
         }
         dismiss(animated: true, completion: nil)
     }
@@ -120,7 +112,29 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         dismiss(animated: true, completion: nil)
     }
     
-    // MARK: Textfield Behavior
+    //MARK: Cancel
+    
+    @objc func cancel() {
+        imagePickerView.image = nil
+        topText.text = topPlaceHolderText
+        bottomText.text = bottomPlaceHolderText
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        if let navigationController = navigationController {
+            navigationController.popToRootViewController(animated: true)
+        }
+    }
+    
+    
+    // MARK: Textfield Behavior and Style
+    
+    func styleTextField(_ textField: UITextField,_ defaultText: String) {
+        textField.text = defaultText
+        textField.borderStyle = .none
+        textField.delegate = self
+        textField.textAlignment = .center
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.textAlignment = .center
+    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         //Clear only if text is default text
@@ -137,16 +151,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     //MARK: Generate Memed Image
     
-    func generateMeme()  {
+    func generateMeme() -> Meme {
         let memedImage = generateMemedImage()
-        _ = Meme(topText: topText.text!, bottomText: bottomText.text!, originalImage: imagePickerView.image!, memedImage: memedImage)
+        return Meme(topText: topText.text!, bottomText: bottomText.text!, originalImage: imagePickerView.image!, memedImage: memedImage)
     }
     
     func generateMemedImage() -> UIImage {
         //Hide toolbar and save button to generate image
         toolBar.isHidden = true
-        saveButton.isHidden = true
-        cancelButton.isHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: false)
        //render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
         view.drawHierarchy(in: self.view.frame, afterScreenUpdates:  true)
@@ -155,8 +168,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         //show toolbar and navbar
         toolBar.isHidden = false
-        saveButton.isHidden = false
-        cancelButton.isHidden = false
+        navigationController?.setNavigationBarHidden(false, animated: false)
         return memedImage
     }
     
@@ -167,18 +179,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let controller = UIActivityViewController(activityItems: [meme], applicationActivities: nil)
         controller.completionWithItemsHandler = {[weak self] type, completed, items, error in
             if completed {
-                self?.generateMeme()
+              if let meme = self?.generateMeme() {
+                //save meme so can be accessed later
+                self?.addMemeToArray(meme)
+                }
             }
             controller.dismiss(animated: true, completion: nil)
+            if (self?.navigationController) != nil {
+                self?.navigationController?.popToRootViewController(animated: true)
+            }
         }
         self.present(controller, animated: true, completion: nil)
     }
-        
-    @IBAction func cancel(_ sender: Any) {
-        imagePickerView.image = nil
-        topText.text = topPlaceHolderText
-        bottomText.text = bottomPlaceHolderText
-        saveButton.isEnabled = false
+    
+    func addMemeToArray(_ meme : Meme) {
+        (UIApplication.shared.delegate as! AppDelegate).memes.append(meme)
     }
 }
 

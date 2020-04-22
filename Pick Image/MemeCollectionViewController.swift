@@ -1,5 +1,5 @@
 //
-//  CollectionViewController.swift
+//  MemeCollectionViewController.swift
 //  Pick Image
 //
 //  Created by Natasha Stopa on 4/14/20.
@@ -23,13 +23,14 @@ class MemeCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let space: CGFloat = 1.0
-        //let dimension = (view.frame.size.width - (2 * space)) / 2.0
+        let space: CGFloat = 2.0
+        let wDimension = (view.frame.size.width - (2 * space)) / 3.0
+        let hDimension = (view.frame.size.height - (4 * space)) / 5.0
         
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
-        //Commented out because led to issue where not all images were displayed
-        //flowLayout.itemSize = CGSize(width: dimension, height: dimension)
+        
+        flowLayout.itemSize = CGSize(width: wDimension, height: hDimension)
 
     }
     

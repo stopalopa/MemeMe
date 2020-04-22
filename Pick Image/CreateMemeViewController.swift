@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CreateMemeViewController.swift
 //  Pick Image
 //
 //  Created by Natasha Stopa on 4/9/20.
@@ -146,7 +146,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        return true;
+        return true
     }
     
     //MARK: Generate Memed Image
@@ -157,9 +157,9 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     func generateMemedImage() -> UIImage {
-        //Hide toolbar and save button to generate image
-        toolBar.isHidden = true
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        //Hide toolbar to generate image
+        hideToolBar(true)
+        
        //render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
         view.drawHierarchy(in: self.view.frame, afterScreenUpdates:  true)
@@ -167,9 +167,16 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         UIGraphicsEndImageContext()
         
         //show toolbar and navbar
-        toolBar.isHidden = false
-        navigationController?.setNavigationBarHidden(false, animated: false)
+        hideToolBar(false)
+        
         return memedImage
+    }
+    
+    
+    func hideToolBar(_ isHidden: Bool) {
+        toolBar.isHidden = isHidden
+        //hiding the nav controller didn't seem to make a difference
+        //navigationController?.setNavigationBarHidden(isHidden, animated: false)
     }
     
     // MARK: Share and cancel methods
